@@ -1,0 +1,4 @@
+interface:
+  display_name: "Install VulnerableApp Kubernetes"
+  short_description: "Install the lab with verified checkpoints"
+  default_prompt: "Use $install-vulnerableapp-kubernetes to install the Kubernetes application from scratch and verify every step."

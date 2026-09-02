@@ -1,0 +1,259 @@
+:root {
+  --bg: #e8edf3;
+  --paper: #fcfcf9;
+  --ink: #17202b;
+  --navy: #0d2a4d;
+  --navy-2: #214b78;
+  --gold: #b18a3a;
+  --line: #bcc6d4;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Georgia, "Times New Roman", serif;
+  background:
+    radial-gradient(circle at 15% 20%, #f6f8fb 0%, transparent 45%),
+    linear-gradient(180deg, #dce4ee 0%, var(--bg) 100%);
+  color: var(--ink);
+}
+
+.topbar {
+  height: 22px;
+  background: linear-gradient(90deg, var(--navy) 0%, var(--navy-2) 100%);
+  border-bottom: 3px solid var(--gold);
+}
+
+.container {
+  max-width: 1080px;
+  margin: 36px auto;
+  padding: 28px;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  box-shadow: 0 10px 28px rgba(13, 42, 77, 0.12);
+}
+
+h1 {
+  margin: 0 0 2px;
+  font-size: 2rem;
+  letter-spacing: 0.02em;
+}
+
+.note {
+  margin: 0;
+  color: #4f6077;
+}
+
+.agency-header {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  padding-bottom: 14px;
+  border-bottom: 2px solid #d7dde7;
+}
+
+.kicker {
+  margin: 0 0 4px;
+  color: var(--navy);
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.seal {
+  width: 62px;
+  height: 62px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, #355d8d 0%, var(--navy) 75%);
+  border: 3px solid var(--gold);
+  display: grid;
+  place-items: center;
+  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.35);
+}
+
+.seal-inner {
+  color: #f6e6c1;
+  font-weight: 700;
+  font-size: 1.6rem;
+  line-height: 1;
+}
+
+.session-bar {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin: 16px 0;
+  padding: 12px;
+  border: 1px solid #c5cedb;
+  background: #f3f6fb;
+}
+
+.session-bar p {
+  margin: 0;
+  color: #1f3552;
+}
+
+#status {
+  margin: 6px 0 12px;
+  color: #2d4058;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid var(--line);
+}
+
+th,
+td {
+  text-align: left;
+  border-bottom: 1px solid var(--line);
+  padding: 11px 12px;
+  vertical-align: top;
+}
+
+thead {
+  background: #dde5f0;
+}
+
+th {
+  color: #122844;
+  font-size: 1rem;
+}
+
+tbody tr:nth-child(even) {
+  background: #f5f8fc;
+}
+
+.assistant-panel {
+  margin-top: 20px;
+  border: 1px solid var(--line);
+  background: #f7f9fd;
+  padding: 14px;
+}
+
+.assistant-panel h2 {
+  margin: 0;
+  color: #122844;
+  font-size: 1.2rem;
+}
+
+.assistant-note {
+  margin: 6px 0 10px;
+  color: #3f5168;
+}
+
+.assistant-messages {
+  border: 1px solid #c8d2e0;
+  background: #fff;
+  min-height: 140px;
+  max-height: 260px;
+  overflow-y: auto;
+  padding: 10px;
+}
+
+.assistant-message {
+  margin-bottom: 8px;
+  padding: 8px 10px;
+  border-radius: 4px;
+  white-space: pre-wrap;
+}
+
+.assistant-message.user {
+  background: #e7f0ff;
+  border-left: 3px solid #2f6db2;
+}
+
+.assistant-message.assistant {
+  background: #f2f4f7;
+  border-left: 3px solid #5c6f86;
+}
+
+.assistant-form {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: stretch;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.assistant-form textarea {
+  min-height: 92px;
+  resize: vertical;
+  padding: 11px 12px;
+  border: 1px solid #9eabc0;
+  border-radius: 4px;
+  background: #fff;
+  font-size: 1rem;
+  font-family: "Courier New", Courier, monospace;
+  line-height: 1.4;
+}
+
+.assistant-form button {
+  padding: 11px 16px;
+  border: 1px solid var(--navy);
+  border-radius: 4px;
+  background: var(--navy);
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  min-width: 88px;
+}
+
+@media (max-width: 800px) {
+  .container {
+    margin: 14px;
+    padding: 14px;
+  }
+
+  h1 {
+    font-size: 1.4rem;
+  }
+
+  .agency-header {
+    align-items: flex-start;
+  }
+
+  .session-bar {
+    grid-template-columns: 1fr;
+  }
+
+  .assistant-form {
+    grid-template-columns: 1fr;
+  }
+
+  table,
+  thead,
+  tbody,
+  th,
+  td,
+  tr {
+    display: block;
+  }
+
+  thead {
+    display: none;
+  }
+
+  tr {
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    margin-bottom: 12px;
+    padding: 8px;
+    background: #fff;
+  }
+
+  td {
+    border: none;
+    padding: 6px 4px;
+  }
+
+  td::before {
+    content: attr(data-label) ": ";
+    font-weight: 700;
+  }
+}

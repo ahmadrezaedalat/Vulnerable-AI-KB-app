@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: vulnerableapp-db
+  labels:
+    app.kubernetes.io/part-of: vulnerableapp
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: vulnerableapp
+  labels:
+    app.kubernetes.io/part-of: vulnerableapp

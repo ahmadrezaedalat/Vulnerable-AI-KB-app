@@ -1,0 +1,31 @@
+# Local secrets and environment files
+.env
+.env.*
+!.env.example
+
+# Dependencies and language caches
+node_modules/
+__pycache__/
+*.py[cod]
+
+# Local tooling and agent state
+.agents/
+.codex
+.project_exports/
+
+# Downloaded installers and binaries
+/kubectl
+/minikube*.deb
+/get_helm.sh
+
+# Generated data and reports
+db/*.sqlite
+conversation_report.md
+report_dashboard.html
+json_report_dashboard.html
+*.log
+
+# OS/editor files
+.DS_Store
+*.swp
+*~

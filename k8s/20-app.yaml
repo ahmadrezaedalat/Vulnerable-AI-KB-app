@@ -1,0 +1,105 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: vulnerableapp-config
+  namespace: vulnerableapp
+data:
+  HOST: 0.0.0.0
+  PORT: "3000"
+  DB_HOST: vulnerableapp-postgres.vulnerableapp-db.svc.cluster.local
+  DB_PORT: "5432"
+  DB_NAME: vulnerableapp
+  DB_USER: vulnerableapp
+  DB_SSLMODE: disable
+  DB_INIT_ON_START: "true"
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: vulnerableapp-secrets
+  namespace: vulnerableapp
+type: Opaque
+stringData:
+  DB_PASSWORD: change-me-before-deploy
+  OPENAI_API_KEY: ""
+  CISCO_AI_DEFENSE_API_KEY: ""
+  M365_TENANT_ID: ""
+  M365_CLIENT_ID: ""
+  M365_CLIENT_SECRET: ""
+  M365_SENDER_USER: ""
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vulnerableapp
+  namespace: vulnerableapp
+  labels:
+    app.kubernetes.io/name: vulnerableapp
+    app.kubernetes.io/part-of: vulnerableapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: vulnerableapp
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: vulnerableapp
+        app.kubernetes.io/part-of: vulnerableapp
+    spec:
+      containers:
+        - name: web
+          image: vulnerableapp:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 3000
+          envFrom:
+            - configMapRef:
+                name: vulnerableapp-config
+            - secretRef:
+                name: vulnerableapp-secrets
+          readinessProbe:
+            httpGet:
+              path: /readyz
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: http
+            initialDelaySeconds: 20
+            periodSeconds: 20
+          securityContext:
+            allowPrivilegeEscalation: false
+            runAsNonRoot: true
+            runAsUser: 1000
+            runAsGroup: 1000
+            capabilities:
+              drop:
+                - ALL
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: vulnerableapp
+  namespace: vulnerableapp
+  labels:
+    app.kubernetes.io/name: vulnerableapp
+    app.kubernetes.io/part-of: vulnerableapp
+spec:
+  type: ClusterIP
+  selector:
+    app.kubernetes.io/name: vulnerableapp
+  ports:
+    - name: http
+      port: 80
+      targetPort: http

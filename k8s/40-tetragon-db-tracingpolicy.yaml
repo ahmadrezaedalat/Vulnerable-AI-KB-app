@@ -1,0 +1,54 @@
+apiVersion: cilium.io/v1alpha1
+kind: TracingPolicyNamespaced
+metadata:
+  name: vulnerableapp-postgres-client-network
+  namespace: vulnerableapp
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: vulnerableapp
+  kprobes:
+    - call: tcp_v4_connect
+      syscall: false
+      message: app opened an unexpected non-PostgreSQL IPv4 TCP connection
+      ignore:
+        callNotFound: true
+      tags:
+        - vulnerableapp
+        - network
+        - unexpected-egress
+      args:
+        - index: 0
+          type: sock
+        - index: 1
+          type: sockaddr
+        - index: 2
+          type: int
+      selectors:
+        - matchArgs:
+            - index: 0
+              operator: NotDPort
+              values:
+                - "5432"
+    - call: tcp_v6_connect
+      syscall: false
+      message: app opened an unexpected non-PostgreSQL IPv6 TCP connection
+      ignore:
+        callNotFound: true
+      tags:
+        - vulnerableapp
+        - network
+        - unexpected-egress
+      args:
+        - index: 0
+          type: sock
+        - index: 1
+          type: sockaddr
+        - index: 2
+          type: int
+      selectors:
+        - matchArgs:
+            - index: 0
+              operator: NotDPort
+              values:
+                - "5432"

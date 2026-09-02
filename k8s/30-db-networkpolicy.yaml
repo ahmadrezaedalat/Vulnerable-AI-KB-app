@@ -1,0 +1,22 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-app-to-postgres
+  namespace: vulnerableapp-db
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: vulnerableapp-postgres
+  policyTypes:
+    - Ingress
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: vulnerableapp
+          podSelector:
+            matchLabels:
+              app.kubernetes.io/name: vulnerableapp
+      ports:
+        - protocol: TCP
+          port: 5432

@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>7-Zip</title>
+
+<style>
+
+/* ===== PAGE BACKGROUND ===== */
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #dcdcdc;
+}
+
+/* ===== CENTER WRAPPER ===== */
+.wrapper {
+    width: 1200px;
+    margin: 0 auto;
+    display: flex;
+}
+
+/* ===== LEFT SIDEBAR ===== */
+.sidebar {
+    width: 220px;
+    background: #cfcfcf;
+    padding: 15px;
+}
+
+/* ===== 7-ZIP LOGO ===== */
+.logo {
+    width: 180px;
+    height: 70px;
+    display: flex;
+    border: 3px solid #888;
+    box-shadow: 2px 2px 3px rgba(0,0,0,0.4);
+    margin-bottom: 15px;
+}
+
+.logo-left {
+    width: 70px;
+    background: black;
+    color: white;
+    font-size: 50px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.logo-right {
+    flex: 1;
+    background: #e6e6e6;
+    color: black;
+    font-size: 36px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    letter-spacing: 2px;
+}
+
+.sidebar a {
+    display: block;
+    color: blue;
+    text-decoration: none;
+    margin: 6px 0;
+    font-size: 14px;
+}
+
+.sidebar a:hover {
+    text-decoration: underline;
+}
+
+.sidebar hr {
+    margin: 15px 0;
+}
+
+/* ===== MAIN CONTENT ===== */
+.main {
+    flex: 1;
+    background: #eeeeee;
+    padding: 25px 40px;
+}
+
+.main h1 {
+    text-align: center;
+    margin-top: 0;
+}
+
+.main p {
+    font-size: 15px;
+}
+
+/* ===== DOWNLOAD TABLES ===== */
+.download-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 10px 0 25px 0;
+}
+
+.download-table th {
+    background: #8fc98f;
+    padding: 8px;
+    text-align: left;
+    font-size: 14px;
+}
+
+.download-table td {
+    background: #e6e6e6;
+    padding: 8px;
+    font-size: 14px;
+}
+
+/* ===== RIGHT COLUMN ===== */
+.right {
+    width: 230px;
+    padding: 15px;
+}
+
+.version-box {
+    background: #cfcfcf;
+    margin-bottom: 20px;
+}
+
+.version-header {
+    background: #7e79d6;
+    color: white;
+    padding: 6px 10px;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.version-content {
+    padding: 10px;
+    font-size: 14px;
+}
+
+.version-content a {
+    color: blue;
+    text-decoration: none;
+}
+
+.version-content a:hover {
+    text-decoration: underline;
+}
+
+ul {
+    margin-top: 5px;
+}
+
+li {
+    margin: 5px 0;
+}
+
+</style>
+</head>
+<body>
+
+<div class="wrapper">
+
+    <!-- ===== LEFT SIDEBAR ===== -->
+    <div class="sidebar">
+
+        <div class="logo">
+            <div class="logo-left">7</div>
+            <div class="logo-right">ZIP</div>
+        </div>
+
+        <a href="#">Home</a>
+        <a href="#">7z Format</a>
+        <a href="#">LZMA SDK</a>
+        <a href="#">Download</a>
+        <a href="#">FAQ</a>
+        <a href="#">Support</a>
+        <a href="#">Links</a>
+
+        <hr>
+
+        <strong>English</strong>
+        <a href="#">Chinese Simpl.</a>
+        <a href="#">Chinese Trad.</a>
+        <a href="#">Esperanto</a>
+        <a href="#">French</a>
+        <a href="#">German</a>
+        <a href="#">Japanese</a>
+        <a href="#">Portuguese Brazil</a>
+        <a href="#">Spanish</a>
+        <a href="#">Thai</a>
+        <a href="#">Vietnamese</a>
+
+        <hr>
+        <a href="#">7-max</a>
+
+    </div>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <div class="main">
+
+        <h1>7-Zip</h1>
+
+        <p><strong>7-Zip</strong> is a file archiver with a high compression ratio.</p>
+
+        <h3>Download 7-Zip 26.00 (2026-02-12) for Windows x64 (64-bit):</h3>
+
+        <table class="download-table">
+            <tr>
+                <th>Link</th>
+                <th>Type</th>
+                <th>Windows</th>
+                <th>Size</th>
+            </tr>
+            <tr>
+                <td><a href="/downloads/7z2600-x64.exe" download>Download</a></td>
+                <td>.exe</td>
+                <td>64-bit x64</td>
+                <td>1.6 MB</td>
+            </tr>
+        </table>
+
+        <h3>Download 7-Zip 26.00 for other Windows platforms (32-bit x86 or ARM64):</h3>
+
+        <table class="download-table">
+            <tr>
+                <th>Link</th>
+                <th>Type</th>
+                <th>Windows</th>
+                <th>Size</th>
+            </tr>
+            <tr>
+                <td><a href="/downloads/7z2600-x86.exe" download>Download</a></td>
+                <td>.exe</td>
+                <td>32-bit x86</td>
+                <td>1.3 MB</td>
+            </tr>
+            <tr>
+                <td><a href="/downloads/7z2600-arm64.exe" download>Download</a></td>
+                <td>.exe</td>
+                <td>64-bit ARM64</td>
+                <td>1.5 MB</td>
+            </tr>
+        </table>
+
+        <h2>License</h2>
+
+        <p>
+            7-Zip is free software with open source. Most of the code is under the GNU LGPL license.
+            Some parts of the code are under the BSD 3-clause License.
+            You can use 7-Zip on any computer, including a computer in a commercial organization.
+            You don't need to register or pay for 7-Zip.
+        </p>
+
+        <h2>The main features of 7-Zip</h2>
+
+        <ul>
+            <li>High compression ratio in 7z format with LZMA and LZMA2 compression</li>
+            <li>Supported formats: 7z, XZ, BZIP2, GZIP, TAR, ZIP and WIM</li>
+            <li>Strong AES-256 encryption in 7z and ZIP formats</li>
+            <li>Self-extracting capability for 7z format</li>
+            <li>Integration with Windows Shell</li>
+            <li>Powerful File Manager</li>
+            <li>Powerful command line version</li>
+            <li>Localization for 87 languages</li>
+        </ul>
+
+        <p>
+            7-Zip works in Windows 11 / 10 / 8 / 7 / Vista / XP / 2022 / 2019 / 2016 / 2012 / 2008 / 2003 / 2000.
+        </p>
+
+    </div>
+
+    <!-- ===== RIGHT COLUMN ===== -->
+    <div class="right">
+
+        <div class="version-box">
+            <div class="version-header">7-Zip 26.00</div>
+            <div class="version-content">
+                2026-02-12<br><br>
+                <a href="#">7-Zip 26.00</a>
+            </div>
+        </div>
+
+        <div class="version-box">
+            <div class="version-header">7-Zip 25.01</div>
+            <div class="version-content">
+                2025-08-03<br><br>
+                <a href="#">7-Zip 25.01</a>
+            </div>
+        </div>
+
+        <div class="version-box">
+            <div class="version-header">7-Zip Changelog</div>
+            <div class="version-content">
+                <a href="#">History of 7-zip changes</a>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

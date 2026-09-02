@@ -1,0 +1,191 @@
+apiVersion: cilium.io/v1alpha1
+kind: TracingPolicyNamespaced
+metadata:
+  name: vulnerableapp-postgres-data-file-access
+  namespace: vulnerableapp-db
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: vulnerableapp-postgres
+  kprobes:
+    - call: security_file_permission
+      syscall: false
+      return: true
+      message: PostgreSQL data directory file read or write
+      ignore:
+        callNotFound: true
+      tags:
+        - vulnerableapp
+        - postgres
+        - file-access
+      args:
+        - index: 0
+          type: file
+        - index: 1
+          type: int
+      returnArg:
+        index: 0
+        type: int
+      returnArgAction: Post
+      selectors:
+        - matchArgs:
+            - index: 0
+              operator: Prefix
+              values:
+                - /var/lib/postgresql/data
+            - index: 1
+              operator: Mask
+              values:
+                - "4"
+        - matchArgs:
+            - index: 0
+              operator: Prefix
+              values:
+                - /var/lib/postgresql/data
+            - index: 1
+              operator: Mask
+              values:
+                - "2"
+    - call: security_mmap_file
+      syscall: false
+      return: true
+      message: PostgreSQL data directory file mmap
+      ignore:
+        callNotFound: true
+      tags:
+        - vulnerableapp
+        - postgres
+        - file-access
+      args:
+        - index: 0
+          type: file
+        - index: 1
+          type: uint32
+        - index: 2
+          type: uint32
+      returnArg:
+        index: 0
+        type: int
+      returnArgAction: Post
+      selectors:
+        - matchArgs:
+            - index: 0
+              operator: Prefix
+              values:
+                - /var/lib/postgresql/data
+            - index: 1
+              operator: Mask
+              values:
+                - "1"
+        - matchArgs:
+            - index: 0
+              operator: Prefix
+              values:
+                - /var/lib/postgresql/data
+            - index: 1
+              operator: Mask
+              values:
+                - "2"
+    - call: security_path_truncate
+      syscall: false
+      return: true
+      message: PostgreSQL data directory file truncate
+      ignore:
+        callNotFound: true
+      tags:
+        - vulnerableapp
+        - postgres
+        - file-access
+      args:
+        - index: 0
+          type: path
+      returnArg:
+        index: 0
+        type: int
+      returnArgAction: Post
+      selectors:
+        - matchArgs:
+            - index: 0
+              operator: Prefix
+              values:
+                - /var/lib/postgresql/data
+    - call: security_file_truncate
+      syscall: false
+      return: true
+      message: PostgreSQL data directory file truncate
+      ignore:
+        callNotFound: true
+      tags:
+        - vulnerableapp
+        - postgres
+        - file-access
+      args:
+        - index: 0
+          type: file
+      returnArg:
+        index: 0
+        type: int
+      returnArgAction: Post
+      selectors:
+        - matchArgs:
+            - index: 0
+              operator: Prefix
+              values:
+                - /var/lib/postgresql/data
+---
+apiVersion: cilium.io/v1alpha1
+kind: TracingPolicyNamespaced
+metadata:
+  name: vulnerableapp-postgres-server-network
+  namespace: vulnerableapp-db
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: vulnerableapp-postgres
+  kprobes:
+    - call: tcp_v4_connect
+      syscall: false
+      message: PostgreSQL pod opened an unexpected IPv4 TCP connection
+      ignore:
+        callNotFound: true
+      tags:
+        - vulnerableapp
+        - postgres
+        - network
+        - unexpected-egress
+      args:
+        - index: 0
+          type: sock
+        - index: 1
+          type: sockaddr
+        - index: 2
+          type: int
+      selectors:
+        - matchArgs:
+            - index: 0
+              operator: NotDPort
+              values:
+                - "5432"
+    - call: tcp_v6_connect
+      syscall: false
+      message: PostgreSQL pod opened an unexpected IPv6 TCP connection
+      ignore:
+        callNotFound: true
+      tags:
+        - vulnerableapp
+        - postgres
+        - network
+        - unexpected-egress
+      args:
+        - index: 0
+          type: sock
+        - index: 1
+          type: sockaddr
+        - index: 2
+          type: int
+      selectors:
+        - matchArgs:
+            - index: 0
+              operator: NotDPort
+              values:
+                - "5432"
