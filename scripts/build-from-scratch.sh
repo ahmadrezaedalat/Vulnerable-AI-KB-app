@@ -47,7 +47,6 @@ echo "== Wait for rollouts =="
 
 echo
 echo "== Apply Tetragon lab policies =="
-"${KUBECTL[@]}" apply -f k8s/40-tetragon-db-tracingpolicy.yaml
 "${KUBECTL[@]}" apply -f k8s/43-tetragon-db-file-tracingpolicy.yaml
 "${KUBECTL[@]}" -n vulnerableapp-db delete tracingpolicynamespaced vulnerableapp-postgres-command-exec --ignore-not-found
 

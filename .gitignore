@@ -2,6 +2,8 @@
 .env
 .env.*
 !.env.example
+hubble-enterprise-values.yaml
+installation-config.yaml
 
 # Dependencies and language caches
 node_modules/

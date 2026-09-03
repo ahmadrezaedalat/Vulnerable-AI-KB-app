@@ -2,7 +2,7 @@
 set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-POLICY_FILE="$ROOT_DIR/k8s/40-tetragon-db-tracingpolicy.yaml"
+POLICY_FILE="$ROOT_DIR/k8s/43-tetragon-db-file-tracingpolicy.yaml"
 
 if [[ "${USE_SUDO:-0}" == "1" ]]; then
   KUBECTL=(sudo kubectl)
@@ -39,11 +39,10 @@ fi
 "${KUBECTL[@]}" apply -f "$POLICY_FILE"
 
 echo
-echo "Tetragon is deployed and the vulnerableapp unexpected-network tracing policy is applied."
+echo "Tetragon is deployed and the database tracing policy is applied."
 echo
-echo "Watch unexpected app network events:"
-echo "  USE_SUDO=${USE_SUDO:-0} ./scripts/watch-tetragon-app-db.sh app --all"
+echo "Watch database events:"
+echo "  USE_SUDO=${USE_SUDO:-0} ./scripts/watch-tetragon-app-db.sh db --all"
 echo
-echo "Normal app-to-DB :5432 traffic is suppressed by the policy. Trigger app activity:"
-echo "  curl http://localhost:3000/readyz"
-echo "  curl \"http://localhost:3000/api/clients?q=Alice\""
+echo "Trigger database file activity:"
+echo "  kubectl -n vulnerableapp-db exec deployment/vulnerableapp-postgres -- sh -c 'ls -la /var/lib/postgresql/data >/dev/null'"

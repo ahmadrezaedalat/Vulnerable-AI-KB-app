@@ -74,12 +74,6 @@ http://<your-server-ip>:3001
 
 ## Apply Tetragon Policies
 
-Unexpected network visibility outside normal app-to-PostgreSQL `:5432` traffic:
-
-```bash
-sudo kubectl apply -f k8s/40-tetragon-db-tracingpolicy.yaml
-```
-
 DB data directory filesystem activity and DB outbound TCP connectivity:
 
 ```bash
@@ -140,5 +134,4 @@ sudo kubectl -n vulnerableapp-db exec deployment/vulnerableapp-postgres -- sh -c
 
 ```bash
 sudo kubectl delete -f k8s/43-tetragon-db-file-tracingpolicy.yaml
-sudo kubectl delete -f k8s/40-tetragon-db-tracingpolicy.yaml
 ```

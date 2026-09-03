@@ -3,7 +3,7 @@ set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 VALUES_FILE="$ROOT_DIR/k8s/tetragon-values.yaml"
-POLICY_FILE="$ROOT_DIR/k8s/40-tetragon-db-tracingpolicy.yaml"
+POLICY_FILE="$ROOT_DIR/k8s/43-tetragon-db-file-tracingpolicy.yaml"
 
 if [[ "${USE_SUDO:-0}" == "1" ]]; then
   KUBECTL=(sudo kubectl)
@@ -34,9 +34,5 @@ fi
 echo
 echo "Tetragon was upgraded with explicit tracing-policy settings."
 echo
-echo "Now restart the app to force a fresh DB connection:"
-echo "  ${KUBECTL[*]} -n vulnerableapp rollout restart deployment/vulnerableapp"
-echo "  ${KUBECTL[*]} -n vulnerableapp rollout status deployment/vulnerableapp"
-echo
-echo "Then watch app-side Tetragon events:"
-echo "  USE_SUDO=${USE_SUDO:-0} ./scripts/watch-tetragon-app-db.sh app --all"
+echo "Then watch database-side Tetragon events:"
+echo "  USE_SUDO=${USE_SUDO:-0} ./scripts/watch-tetragon-app-db.sh db --all"

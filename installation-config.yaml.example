@@ -1,0 +1,41 @@
+# Copy this file to installation-config.yaml, chmod 600, and fill every
+# REQUIRED value before invoking the automated installation skill.
+# Never commit installation-config.yaml or paste its contents into chat.
+
+schema_version: 1
+
+sudo:
+  username: "REQUIRED_SUDO_ACCOUNT"
+  require_sudo: true
+
+cluster:
+  kubernetes_minor: "v1.37"
+  allow_existing_cluster_resume: true
+  allow_cluster_reconfiguration: false
+
+application:
+  image_name: "vulnerableapp"
+  image_tag: "auto"
+  db_password: "REQUIRED_CHANGE_ME"
+  openai_api_key: "REQUIRED_OPENAI_KEY_OR_EMPTY"
+  cisco_ai_defense_api_key: ""
+  m365_tenant_id: ""
+  m365_client_id: ""
+  m365_client_secret: ""
+  m365_sender_user: ""
+
+tetragon:
+  enabled: true
+
+hubble_enterprise:
+  enabled: true
+  chart_repository: "https://helm.isovalent.com"
+  chart_version: "1.12.22"
+
+splunk:
+  enabled: true
+  hec_host: "http-inputs-REQUIRED_STACK.splunkcloud.com"
+  hec_port: 443
+  hec_index: "REQUIRED_SPLUNK_INDEX"
+  hec_token: "REQUIRED_HEC_TOKEN"
+  use_ssl: true

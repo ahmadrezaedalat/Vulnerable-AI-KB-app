@@ -145,7 +145,7 @@ spec:
   kprobes:
     - call: tcp_v4_connect
       syscall: false
-      message: PostgreSQL pod opened an unexpected IPv4 TCP connection
+      message: PostgreSQL pod opened an outbound IPv4 TCP connection to a non-application IP
       ignore:
         callNotFound: true
       tags:
@@ -162,13 +162,14 @@ spec:
           type: int
       selectors:
         - matchArgs:
-            - index: 0
-              operator: NotDPort
+            - index: 1
+              operator: NotSAddr
               values:
-                - "5432"
+                - "10.110.242.54/32"
+                - "192.168.103.23/32"
     - call: tcp_v6_connect
       syscall: false
-      message: PostgreSQL pod opened an unexpected IPv6 TCP connection
+      message: PostgreSQL pod opened an outbound IPv6 TCP connection to a non-application IP
       ignore:
         callNotFound: true
       tags:
@@ -185,7 +186,8 @@ spec:
           type: int
       selectors:
         - matchArgs:
-            - index: 0
-              operator: NotDPort
+            - index: 1
+              operator: NotSAddr
               values:
-                - "5432"
+                - "10.110.242.54/32"
+                - "192.168.103.23/32"

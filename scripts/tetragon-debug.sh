@@ -26,7 +26,7 @@ section "Tetragon CRDs"
 section "Tracing Policies"
 "${KUBECTL[@]}" get tracingpolicy -A 2>/dev/null || true
 "${KUBECTL[@]}" get tracingpolicynamespaced -A 2>/dev/null || true
-"${KUBECTL[@]}" -n vulnerableapp describe tracingpolicynamespaced vulnerableapp-postgres-client-network 2>/dev/null || true
+"${KUBECTL[@]}" -n vulnerableapp-db describe tracingpolicynamespaced vulnerableapp-postgres-server-network 2>/dev/null || true
 "${KUBECTL[@]}" -n vulnerableapp-db describe tracingpolicynamespaced vulnerableapp-postgres-server-network 2>/dev/null || true
 "${KUBECTL[@]}" -n vulnerableapp-db describe tracingpolicynamespaced vulnerableapp-postgres-data-file-access 2>/dev/null || true
 
@@ -64,8 +64,7 @@ cat <<'EOF'
 
 Next high-signal test:
 
-1. Apply the runtime policies:
-     sudo kubectl apply -f k8s/40-tetragon-db-tracingpolicy.yaml
+1. Apply the database runtime policy:
      sudo kubectl apply -f k8s/43-tetragon-db-file-tracingpolicy.yaml
 
 2. In one terminal, watch DB events:

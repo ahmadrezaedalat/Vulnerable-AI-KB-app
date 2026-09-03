@@ -1,18 +1,18 @@
 ---
 name: install-vulnerableapp-kubernetes
-description: Install, resume, or verify the VulnerableApp single-node Kubernetes lab on Ubuntu by executing README_KUBECTL_UBUNTU.md in dependency order with mandatory success gates. Use when an AI agent must build the kubeadm/containerd/Calico cluster, configure storage and secrets, build and import the image, deploy with kubectl, expose and test the web app, or optionally install Tetragon and its Splunk HEC integration.
+description: Install, resume, or verify the VulnerableApp single-node Kubernetes lab on Ubuntu by executing installation_readme.md in dependency order with mandatory success gates. Use when an AI agent must build the kubeadm/containerd/Calico cluster, configure storage and secrets, build and import the image, deploy with kubectl, expose and test the web app, and install and validate Tetragon with its Splunk HEC integration.
 ---
 
 # Install VulnerableApp Kubernetes
 
-Treat `README_KUBECTL_UBUNTU.md` as the authoritative command and configuration
+Treat `installation_readme.md` as the authoritative command and configuration
 reference. Orchestrate it like an idempotent installation program: inspect,
 execute one phase, validate its postconditions, record the result, then continue.
 
 ## Load the source instructions
 
 1. Resolve the repository root as two directories above this `SKILL.md`.
-2. Read `<repo-root>/README_KUBECTL_UBUNTU.md` completely before changing the
+2. Read `<repo-root>/installation_readme.md` completely before changing the
    host or cluster.
 3. Confirm that the referenced `k8s/`, `Dockerfile`, and application files exist.
 4. If the README is absent or internally inconsistent, stop and report the
@@ -302,35 +302,52 @@ Before passing:
 
 Mark an actual reboot test `deferred-user-action` unless explicitly authorized.
 
-## Phase 13: Optional Tetragon and Splunk integration
+## Phase 13: Tetragon and Splunk integration
 
-README Section 15 is conditional.
+README Section 15 is part of the installation setup.
 
-- Install Tetragon when the user requests runtime monitoring and the kernel,
-  BTF, privilege, image-pull, and Helm prerequisites pass.
-- Install the Splunk collector only when the user requests Splunk integration
-  and has independently configured a reachable HEC endpoint, index, and token.
-- If optional monitoring is not requested, mark this phase `skipped-optional`.
-- Never treat a missing Splunk system or HEC token as failure of the base app.
+- Install and validate Tetragon on every setup when the kernel, BTF, privilege,
+  image-pull, and Helm prerequisites pass.
+- Treat Hubble Enterprise's Splunk HEC export as a required setup step after the
+  user supplies a reachable HEC endpoint, index, and token. If those external
+  inputs are not available, mark this phase `deferred-user-action` and name the
+  missing inputs; do not silently skip the integration.
+- Never place the HEC token in a values file, source file, shell history, or
+  report. Store it only in the Kubernetes Secret described by the README.
+- Use Isovalent Hubble Enterprise release `1.12.22` with the `export` block in
+  `hubble-enterprise-values.yaml`, `mode: fluentd`, and the
+  `export-fluentd` container. Do not substitute the Splunk OpenTelemetry
+  Collector for this integration path.
+- Before installing Hubble Enterprise, inspect rendered resources for overlap
+  with the existing standalone `tetragon` Helm release. Stop and request a
+  migration decision before uninstalling or replacing overlapping Tetragon
+  resources.
+- Never treat a missing external Splunk system or HEC token as a failure of the
+  base application; it is a blocking prerequisite for completing this phase.
 
 For Tetragon, require:
 
 - One ready agent per node and a healthy operator.
-- The repository tracing policies apply successfully.
+- `k8s/43-tetragon-db-file-tracingpolicy.yaml` is the only repository tracing
+  policy applied for this setup; the removed `k8s/40-tetragon-db-tracingpolicy.yaml`
+  must not be recreated.
+- The live database network rule evaluates `sockaddr` argument `index: 1` with
+  `NotSAddr`, allowing only the configured application Service/pod IPs.
+- The database pod's application-IP allowlist is refreshed after an application
+  pod replacement.
 - `export-stdout` emits JSON events.
 - Local `tetra getevents` works.
 
-For Splunk, require:
+For Hubble Enterprise/Splunk, require:
 
 - The HEC token is stored only in the named Kubernetes Secret.
-- The collector agent is ready on every node.
-- Include-only annotation filtering is active.
-- Collector logs contain no HEC authentication, TLS, queue, or export failures.
-- A newly generated Tetragon event appears in the intended Splunk index and
-  `kube:container:export-stdout` sourcetype.
+- The Hubble Enterprise DaemonSet and `export-fluentd` container are ready.
+- Fluentd logs contain `fluentd worker is now running` and no HEC
+  authentication, TLS, queue, or export failures.
+- A newly generated Tetragon event appears in the intended Splunk index.
 
-Do not claim Splunk success solely because the collector pod is running. Event
-arrival in Splunk is the terminal postcondition.
+Do not claim Splunk success solely because the Hubble Enterprise pod is
+running. Event arrival in Splunk is the terminal postcondition.
 
 ## Failure handling
 
@@ -353,12 +370,12 @@ Never skip a red validation to make later phases appear successful.
 Return a compact installation report containing:
 
 - Hostname, LAN IP, Ubuntu version, Kubernetes version, and node readiness.
-- Passed, skipped-optional, and deferred phases.
+- Passed and deferred phases.
 - App and database pod readiness, service endpoints, and PVC/PV state.
 - Image tag and digest, without registry credentials.
-- Health, readiness, database lookup, UI, and optional assistant test results.
+- Health, readiness, database lookup, UI, and assistant test results.
 - Access URL and listener binding.
-- Tetragon and Splunk event-delivery status when requested.
+- Tetragon and Splunk event-delivery status.
 - Any manual reboot, firewall, port-forward, secret rotation, or persistence
   action still required.
 

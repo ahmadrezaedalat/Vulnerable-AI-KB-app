@@ -1,0 +1,2 @@
+podAnnotations:
+  splunk.com/include: "true"
